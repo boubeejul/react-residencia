@@ -1,5 +1,5 @@
 # 📝 Desenvolvimento Web - Atividades
-➡️ Atividades desenvolvidas para a disciplina de Desenvolvimento Web (React) da Residência em TIC
+➡️ Atividades desenvolvidas durante a disciplina de Desenvolvimento Web (React) da Residência em TIC
 
 ## 📍 Magic Cards:
 - Primeira experiência utilizando API (Magic: The Gathering API)
