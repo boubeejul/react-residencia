@@ -1,47 +1,53 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Card from './components/Card'
 import './style.css'
 
-class App extends React.Component {
-  state = {
-    cards: [],
-    isLoading: true
-  }
+function App() {
+  const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  async componentDidMount() {
-    const newCards = await fetch("https://api.magicthegathering.io/v1/cards?random=true&pageSize=15");
-    const cardsJson = await newCards.json();
-    this.setState({ cards: cardsJson.cards, isLoading: false });
-  }
+  useEffect(() => {
 
-  async refreshCards() {
+    fetchData()
+    
+    async function fetchData() {
+      const newCards = await fetch("https://api.magicthegathering.io/v1/cards?random=true&pageSize=15");
+      const cardsJson = await newCards.json();
+      setCards(cardsJson.cards);
+      setIsLoading(false)
+    }
+  }, [])
+
+  async function refreshCards() {
     var newCards = await fetch("https://api.magicthegathering.io/v1/cards?random=true&pageSize=15");
     var cardsJson = await newCards.json();
-    this.setState({cards: cardsJson.cards});
+    setCards(cardsJson.cards);
   }
 
-  render() {
     return (
       <>
-      <button id='refreshButton' onClick={() => this.refreshCards()}>Trocar cartas</button>
-      <div id='container'>
         {
-          this.state.isLoading ? (
+          isLoading ? (
             <h1>Carregando...</h1>
           ) : (
-            this.state.cards.map(card => {
-              if (card.imageUrl == null)
-                card.imageUrl = "https://wallingford.librarycalendar.com/sites/default/files/2022-11/Magic_the_gathering-card_back.jpg"
+            <>
+              <button id='refreshButton' onClick={() => refreshCards()}>Trocar cartas</button>
+              <div id='container'>
+                {
+                  cards.map(card => {
+                    if (card.imageUrl == null)
+                      card.imageUrl = "https://wallingford.librarycalendar.com/sites/default/files/2022-11/Magic_the_gathering-card_back.jpg"
 
-              return <Card name={card.name} image={card.imageUrl} id={card.id} />
+                    return <Card name={card.name} image={card.imageUrl} id={card.id} />
 
-            })
+                  })
+                }
+              </div>
+            </>
           )
         }
-      </div>
       </>
     );
   }
-}
 
 export default App;
